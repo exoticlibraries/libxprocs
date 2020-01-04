@@ -2,8 +2,8 @@
 #include <windows.h>
 #include <Winbase.h>
 #include <Tlhelp32.h>
-#include<iostream> 
-#include<string>
+#include <iostream> 
+#include <string>
 
 using namespace std; 
 
@@ -16,7 +16,8 @@ int main(int argc, char** argv) {
         cout << "Is process running? '" << argv[1] << "' = " << (FindRunningProcess(argv[1]) ? "true" : "false" ) << endl;
         return 0;
     } else {
-        cout << "You need to specify the process name" ;
+        cerr << "You need to specify the process name" ;
+        return 1;
     }
 }
 
@@ -50,3 +51,7 @@ bool FindRunningProcess(AnsiString process) {
 
     return procRunning;
 }
+
+/**
+compile with 'g++ find_process.cpp'
+*/

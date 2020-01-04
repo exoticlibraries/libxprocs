@@ -2,7 +2,10 @@
 #include <windows.h>
 #include <Winbase.h>
 #include <Tlhelp32.h>
-#include<iostream> 
+#include <iostream> 
+#include <string>
+
+using namespace std; 
 
 void ListRunningProcess();
 
@@ -39,5 +42,7 @@ typedef struct tagPROCESSENTRY32 {
   DWORD     dwFlags;
   CHAR      szExeFile[MAX_PATH];
 } PROCESSENTRY32;
+
+compile with 'g++ running_processes.cpp'
 
 */
