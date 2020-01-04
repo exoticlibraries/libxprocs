@@ -3,7 +3,6 @@
 #include <Winbase.h>
 #include <Tlhelp32.h>
 #include<iostream> 
-#include<string>
 
 void ListRunningProcess();
 
@@ -18,7 +17,7 @@ void ListRunningProcess() {
     pe32.dwSize = sizeof(PROCESSENTRY32);
 
     while (Process32Next(hProcessSnap, &pe32)) { 
-        cout << pe32.szExeFile << ", " << pe32.th32ProcessID << ", " << pe32.cntThreads);
+        cout << pe32.szExeFile << ", " << pe32.th32ProcessID << ", " << pe32.cntThreads << endl;
     }
     CloseHandle(hProcessSnap);
 }
