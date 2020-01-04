@@ -9,11 +9,13 @@ using namespace std;
 
 void ListRunningProcess();
 
-int main(int argc, char** argv) {
+int main(int argc, char** argv) 
+{
     ListRunningProcess();
 }
 
-void ListRunningProcess() {
+void ListRunningProcess() 
+{
     HANDLE hProcessSnap;
     PROCESSENTRY32 pe32;
     hProcessSnap = CreateToolhelp32Snapshot(TH32CS_SNAPPROCESS, 0);

@@ -11,7 +11,8 @@ typedef string AnsiString;
 
 bool FindRunningProcess(AnsiString process);
 
-int main(int argc, char** argv) {
+int main(int argc, char** argv) 
+{
     if (argc > 1) {
         cout << "Is process running? '" << argv[1] << "' = " << (FindRunningProcess(argv[1]) ? "true" : "false" ) << endl;
         return 0;
@@ -21,7 +22,8 @@ int main(int argc, char** argv) {
     }
 }
 
-bool FindRunningProcess(AnsiString process) {
+bool FindRunningProcess(AnsiString process) 
+{
     AnsiString compare;
     bool procRunning = false;
 

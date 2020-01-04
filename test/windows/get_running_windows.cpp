@@ -5,7 +5,8 @@
 #include <iostream> 
 #include <string>
 
-static BOOL CALLBACK enumWindowCallback(HWND hWnd, LPARAM lparam) {
+static BOOL CALLBACK enumWindowCallback(HWND hWnd, LPARAM lparam) 
+{
     int length = GetWindowTextLength(hWnd);
     char* buffer = new char[length + 1];
     GetWindowText(hWnd, buffer, length + 1);
@@ -19,7 +20,8 @@ static BOOL CALLBACK enumWindowCallback(HWND hWnd, LPARAM lparam) {
     return TRUE;
 }
 
-int main() {
+int main() 
+{
     std::cout << "Enmumerating windows..." << std::endl;
     EnumWindows(enumWindowCallback, 0);
     return 0;
