@@ -49,3 +49,11 @@ int main( void )
 
     return 0;
 }
+
+/**
+https://docs.microsoft.com/en-us/windows/win32/psapi/enumerating-all-processes
+https://docs.microsoft.com/en-us/windows/win32/api/psapi/nf-psapi-getmodulefilenameexa
+https://docs.microsoft.com/en-us/windows/win32/api/psapi/nf-psapi-getmappedfilenamea
+
+compile with 'g++ running_processes_2.cpp -lpsapi'
+*/
