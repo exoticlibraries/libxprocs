@@ -41,6 +41,18 @@ LIBO_API PROCESS GetProcessById( unsigned int processID )
 
 /**
     Get the list of running processes. The processes are returned in std::list. 
+    The first argument is a callback function that is invoked with the `PROCESS` and 
+    second argument `extraParam` if it not NULL everytime a `PROCESS` is found. 
+    If the callback function returns true it is added to the `std::list<PROCESS>` to 
+    be returned if it returns false the `PROCESS` is not added to the return value.
+    If the first and seond param is `NULL` all running process is returned
+    
+    To get all the processes without any condition or calback the first and second parameters 
+    should be `NULL` 
+    
+    \code{.cpp}
+    std::list<PROCESS> processes = RunningProcesses(NULL, NULL);
+    \endcode
  
     \param callbackCondition The call back function that must return either true or false.
     \param extraParam extra parameter passed to the callbackCondition callback function if specified.
@@ -68,12 +80,15 @@ LIBO_API std::list<PROCESS> RunningProcesses( ProcessCondition callbackCondition
         if( aProcesses[i] != 0 )
         {
             PROCESS p = GetProcessById((unsigned int)aProcesses[i] );
-            processes.push_back(p);
             if ( callbackCondition != NULL )
             {
-                if (callbackCondition(p, extraParam) == false) {
-                    break;
+                if (callbackCondition(p, extraParam) == true) {
+                    processes.push_back(p);
                 }
+            }  
+            else  
+            {
+                processes.push_back(p);
             }
         }
     }

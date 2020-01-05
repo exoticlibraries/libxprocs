@@ -114,8 +114,9 @@ LIBO_API <a class="el" href="struct_p_r_o_c_e_s_s.html">PROCESS</a>&#160;</td><t
         </tr>
       </table>
 </div><div class="memdoc">
-<p>Get the list of running processes. The processes are returned in std::list.</p>
-<dl class="params"><dt>Parameters</dt><dd>
+<p>Get the list of running processes. The processes are returned in std::list. The first argument is a callback function that is invoked with the <code><a class="el" href="struct_p_r_o_c_e_s_s.html">PROCESS</a></code> and second argument <code>extraParam</code> if it not NULL everytime a <code><a class="el" href="struct_p_r_o_c_e_s_s.html">PROCESS</a></code> is found. If the callback function returns true it is added to the <code>std::list&lt;<a class="el" href="struct_p_r_o_c_e_s_s.html">PROCESS</a>&gt;</code> to be returned if it returns false the <code><a class="el" href="struct_p_r_o_c_e_s_s.html">PROCESS</a></code> is not added to the return value. If the first and seond param is <code>NULL</code> all running process is returned</p>
+<p>To get all the processes without any condition or calback the first and second parameters should be <code>NULL</code></p>
+<div class="fragment"><div class="line">std::list&lt;PROCESS&gt; processes = <a class="code" href="libo-processes_8h.html#a723ac35b61edb61c939136a5d7b7c91a">RunningProcesses</a>(NULL, NULL);</div></div><!-- fragment --><dl class="params"><dt>Parameters</dt><dd>
   <table class="params">
     <tr><td class="paramname">callbackCondition</td><td>The call back function that must return either true or false. </td></tr>
     <tr><td class="paramname">extraParam</td><td>extra parameter passed to the callbackCondition callback function if specified.</td></tr>
