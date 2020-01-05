@@ -8,10 +8,18 @@
 */
 #include <libo/libo-processes.h> 
 
+PROCESS GetProcessById(unsigned int processID )
+{
+    PROCESS p; 
+    p.Id = processID;
+    
+    return p;
+}
+
 LIBO_API std::list<PROCESS> RunningProcesses() 
 {
     std::list<PROCESS> processes;
-    DWORD aProcesses[1024], cbNeeded, cProcesses;
+    unsigned int aProcesses[1024], cbNeeded, cProcesses;
     unsigned int i;
 
     if (!EnumProcesses( aProcesses, sizeof(aProcesses), &cbNeeded ))
@@ -23,10 +31,8 @@ LIBO_API std::list<PROCESS> RunningProcesses()
     {
         if( aProcesses[i] != 0 )
         {
-            PROCESS p ;
-            p.Id = aProcesses[i];
+            PROCESS p = GetProcessById( aProcesses[i] );
             processes.push_back(p);
-            //PrintProcessNameAndID( aProcesses[i] );
         }
     }
 
