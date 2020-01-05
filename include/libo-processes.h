@@ -39,9 +39,13 @@
 #define LIBO_API extern
 #endif
 
-typedef struct Process {
-    
-} Process;
+typedef struct PROCESS {
+    long long Id;
+} PROCESS;
+
+LIBO_API bool ProcessPathFromId(int processId);
+LIBO_API PROCESS ProcessByName(std::string processName);
+LIBO_API std::list<PROCESS> ProcessesByName(std::string processName);
 
 #if defined(__APPLE__) && defined(__MACH__)
 #define OPERATINGSYSTEM "Mac OS X"
@@ -82,9 +86,7 @@ typedef struct Process {
 #if defined(__WIN32__) || defined(__WINDOWS__) || defined(_MSC_VER) || \
 defined (_WIN32) || defined(_WIN64) || defined(_WINDOWS)
 #define OPERATINGSYSTEM "Microsoft(R) Windows(TM)"
-LIBO_API bool ProcessPathFromId(int processId);
-LIBO_API Process ProcessByName(string processName);
-LIBO_API list<Process> ProcessesByName(string processName);
+
 #endif
 
 #if defined(__REACTOS__)
