@@ -1,5 +1,5 @@
 
-#include "../include/libo-processes.h"
+#include "../src/libo-processes.c"
 #include <iostream>
 
 int main() 
