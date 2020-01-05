@@ -10,7 +10,27 @@
 
 LIBO_API std::list<PROCESS> RunningProcesses() 
 {
-    
+    std::list<PROCESS> processes;
+    DWORD aProcesses[1024], cbNeeded, cProcesses;
+    unsigned int i;
+
+    if (!EnumProcesses( aProcesses, sizeof(aProcesses), &cbNeeded ))
+    {
+        return processes;
+    }
+    cProcesses = cbNeeded / sizeof(DWORD);
+    for ( i = 0; i < cProcesses; i++ )
+    {
+        if( aProcesses[i] != 0 )
+        {
+            PROCESS p ;
+            p.Id = aProcesses[i];
+            processes.push_back(p);
+            //PrintProcessNameAndID( aProcesses[i] );
+        }
+    }
+
+    return processes;
 }
 
 LIBO_API PROCESS ProcessByName(std::string processName)

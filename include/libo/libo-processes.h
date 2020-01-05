@@ -41,17 +41,17 @@
 
 typedef struct PROCESS {
     long long Id;
-    std:string exeName;
-    std:string exePath;
+    std::string exeName;
+    std::string exePath;
     int threadCount;
-    str:string windowTitle;
+    std::string windowTitle;
     long long lifeTime;
-    char[] icon;
+    //char[] icon;
     long long cpuUsage;
     long long memoryUsage;
     long long networkUsage;
     long long diskUsage;
-    std:string ownerId;
+    std::string ownerId;
 } PROCESS;
 
 LIBO_API std::list<PROCESS> RunningProcesses();
