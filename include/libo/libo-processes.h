@@ -1,10 +1,9 @@
 
-/*P
-    :copyright: 2019, Adewale Azeez
-    :license: GNU General Public License v3.0 Copyright (c) 
-    :author: Adewale Azeez <azeezadewale98@gmail.com>
-    :date: 05 January 2019
-    :filename: libo-processes.h
+/**
+    \copyright GNU General Public License v3.0 Copyright (c) 2019, Adewale Azeez 
+    \author Adewale Azeez <azeezadewale98@gmail.com>
+    \date 05 January 2019
+    \file libo-processes.h
 */
 
 #ifndef LIBO_PROCESSES_H
@@ -44,7 +43,7 @@
 #def MAX_PATH 1024
 #endif
 
-typedef struct PROCESS {
+LIBO_API typedef struct PROCESS {
     long long Id;
     std::string exeName;
     std::string exePath;
@@ -62,16 +61,16 @@ typedef struct PROCESS {
 /**
     if it returns true the find process loop continue
 */
-LIBO_API typedef bool (*ProcessCondition)(void* extraParam);
+typedef bool (*ProcessCondition)( PROCESS process, void* extraParam );
 
-LIBO_API std::list<PROCESS> RunningProcesses(ProcessCondition);
+LIBO_API std::list<PROCESS> RunningProcesses( ProcessCondition callbackCondition, void* extraParam );
 LIBO_API std::list<PROCESS> OpenedWindowedProcesses();
 
-LIBO_API PROCESS GetProcessById(unsigned int processID);
-LIBO_API PROCESS GetProcessByName(std::string processName);
-LIBO_API std::list<PROCESS> GetProcessesByName(std::string processName);
+LIBO_API PROCESS GetProcessById( unsigned int processID );
+LIBO_API PROCESS GetProcessByName( std::string processName );
+LIBO_API std::list<PROCESS> GetProcessesByName( std::string processName );
 
-LIBO_API bool ProcessPathFromId(int processId);
+LIBO_API bool ProcessPathFromId( int processId );
 
 #if defined(__WIN32__) || defined(__WINDOWS__) || defined(_MSC_VER) || \
 defined (_WIN32) || defined(_WIN64) || defined(_WINDOWS)

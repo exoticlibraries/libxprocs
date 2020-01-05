@@ -1,14 +1,13 @@
 
-/*P
-    :copyright: 2019, Adewale Azeez
-    :license: GNU General Public License v3.0 Copyright (c) 
-    :author: Adewale Azeez <azeezadewale98@gmail.com>
-    :date: 05 January 2019
-    :filename: libo-processes.cpp
+/**
+    \copyright GNU General Public License v3.0 Copyright (c) 2019, Adewale Azeez 
+    \author Adewale Azeez <azeezadewale98@gmail.com>
+    \date 05 January 2019
+    \file libo-processes.cpp
 */
 #include <libo/libo-processes.h> 
 
-PROCESS GetProcessById( unsigned int processID )
+LIBO_API PROCESS GetProcessById( unsigned int processID )
 {
     PROCESS p; 
     p.Id = processID;
@@ -40,7 +39,16 @@ PROCESS GetProcessById( unsigned int processID )
     return p;
 }
 
-LIBO_API std::list<PROCESS> RunningProcesses() 
+/**
+    Get the list of running processes. The processes are returned in std::list. 
+ 
+    \param callbackCondition The call back function that must return either true or false.
+    \param extraParam extra parameter passed to the callbackCondition callback function if specified.
+    
+    \return the std::list of running PROCESSes
+    
+*/
+LIBO_API std::list<PROCESS> RunningProcesses( ProcessCondition callbackCondition, void* extraParam ) 
 {
     std::list<PROCESS> processes;
     #ifdef _WIN32
@@ -61,6 +69,12 @@ LIBO_API std::list<PROCESS> RunningProcesses()
         {
             PROCESS p = GetProcessById((unsigned int)aProcesses[i] );
             processes.push_back(p);
+            if ( callbackCondition != NULL )
+            {
+                if (callbackCondition(p, extraParam) == false) {
+                    break;
+                }
+            }
         }
     }
 

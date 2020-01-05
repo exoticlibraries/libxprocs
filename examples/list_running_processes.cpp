@@ -1,14 +1,18 @@
+/**
+    \copyright GNU General Public License v3.0 Copyright (c) 2019, Adewale Azeez 
+    \author Adewale Azeez <azeezadewale98@gmail.com>
+    \date 05 January 2019
+    \file list_running_processes.cpp
+*/
 
 #include "../src/libo-processes.cpp"
 #include <iostream>
 
 int main() 
 {
-    std::list<PROCESS> processes = RunningProcesses();
+    std::list<PROCESS> processes = RunningProcesses(NULL, NULL);
     std::list<PROCESS>::iterator it; 
     for(it = processes.begin(); it != processes.end(); ++it) 
         std::cout << "Id=" << it->Id << "," << it->exeName << "," << it->exePath << std::endl;
     return 0;
 }
-
-// g++ -IC:\Users\azeez\Documents\OPEN_SOURCE\LIBOPROJECTS\libo-processes\include\ list_running_processes.cpp -lpsapi
