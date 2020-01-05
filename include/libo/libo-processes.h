@@ -59,7 +59,12 @@ typedef struct PROCESS {
     std::string ownerId;
 } PROCESS;
 
-LIBO_API std::list<PROCESS> RunningProcesses();
+/**
+    if it returns true the find process loop continue
+*/
+LIBO_API typedef bool (*ProcessCondition)(void* extraParam);
+
+LIBO_API std::list<PROCESS> RunningProcesses(ProcessCondition);
 LIBO_API std::list<PROCESS> OpenedWindowedProcesses();
 
 LIBO_API PROCESS GetProcessById(unsigned int processID);
