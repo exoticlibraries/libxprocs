@@ -13,6 +13,7 @@
 #include <list> 
 #include <iterator> 
 #include <string>
+#include <vector>
 
 #ifdef _WIN32
 /*
@@ -37,6 +38,10 @@
 #define LIBO_API __declspec(dllexport)
 #else
 #define LIBO_API extern
+#endif
+
+#ifndef MAX_PATH
+#def MAX_PATH 1024
 #endif
 
 typedef struct PROCESS {

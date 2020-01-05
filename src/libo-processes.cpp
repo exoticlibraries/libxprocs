@@ -8,10 +8,34 @@
 */
 #include <libo/libo-processes.h> 
 
-PROCESS GetProcessById(unsigned int processID )
+PROCESS GetProcessById( unsigned int processID )
 {
     PROCESS p; 
     p.Id = processID;
+    #ifdef _WIN32
+    HANDLE hProcess = OpenProcess( PROCESS_QUERY_INFORMATION | PROCESS_VM_READ, FALSE, processID );
+    if ( hProcess != NULL )
+    {
+        HMODULE hMod;
+        DWORD cbNeeded;
+        if ( EnumProcessModules( hProcess, &hMod, sizeof(hMod), &cbNeeded) ) 
+        {
+            TCHAR szProcessName[MAX_PATH] = TEXT("");
+            TCHAR szProcessPath[MAX_PATH] = TEXT("");
+            
+            GetModuleBaseName( hProcess, hMod, szProcessName, sizeof(szProcessName)/sizeof(TCHAR) );
+            GetModuleFileNameExA( hProcess, hMod, szProcessPath, sizeof(szProcessPath)/sizeof(TCHAR) );
+            p.exeName = szProcessName;
+            p.exePath = szProcessPath;
+            
+            
+            ZeroMemory( szProcessName, sizeof(szProcessName) );
+            ZeroMemory( szProcessPath, sizeof(szProcessPath) );
+        }
+    }
+    #else
+    
+    #endif
     
     return p;
 }
@@ -19,7 +43,11 @@ PROCESS GetProcessById(unsigned int processID )
 LIBO_API std::list<PROCESS> RunningProcesses() 
 {
     std::list<PROCESS> processes;
+    #ifdef _WIN32
+    DWORD aProcesses[1024], cbNeeded, cProcesses;
+    #else
     unsigned int aProcesses[1024], cbNeeded, cProcesses;
+    #endif
     unsigned int i;
 
     if (!EnumProcesses( aProcesses, sizeof(aProcesses), &cbNeeded ))
@@ -31,7 +59,7 @@ LIBO_API std::list<PROCESS> RunningProcesses()
     {
         if( aProcesses[i] != 0 )
         {
-            PROCESS p = GetProcessById( aProcesses[i] );
+            PROCESS p = GetProcessById((unsigned int)aProcesses[i] );
             processes.push_back(p);
         }
     }

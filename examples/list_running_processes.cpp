@@ -7,7 +7,7 @@ int main()
     std::list<PROCESS> processes = RunningProcesses();
     std::list<PROCESS>::iterator it; 
     for(it = processes.begin(); it != processes.end(); ++it) 
-        std::cout << "Id=" << it->Id << std::endl;
+        std::cout << "Id=" << it->Id << "," << it->exeName << "," << it->exePath << std::endl;
     return 0;
 }
 
