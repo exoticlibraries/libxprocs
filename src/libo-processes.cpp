@@ -8,10 +8,10 @@
 */
 #include <libo/libo-processes.h> 
 
-// LIBO_API bool ProcessPathFromId(int processId)
-// {
+LIBO_API std::list<PROCESS> RunningProcesses() 
+{
     
-// }
+}
 
 LIBO_API PROCESS ProcessByName(std::string processName)
 {
@@ -46,8 +46,3 @@ LIBO_API PROCESS ProcessByName(std::string processName)
 
     return proc;
 }
-
-// LIBO_API std::list<PROCESS> ProcessesByName(std::string processName)
-// {
-    
-// }

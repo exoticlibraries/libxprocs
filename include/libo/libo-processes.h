@@ -41,11 +41,26 @@
 
 typedef struct PROCESS {
     long long Id;
+    std:string exeName;
+    std:string exePath;
+    int threadCount;
+    str:string windowTitle;
+    long long lifeTime;
+    char[] icon;
+    long long cpuUsage;
+    long long memoryUsage;
+    long long networkUsage;
+    long long diskUsage;
+    std:string ownerId;
 } PROCESS;
 
-LIBO_API bool ProcessPathFromId(int processId);
+LIBO_API std::list<PROCESS> RunningProcesses();
+LIBO_API std::list<PROCESS> OpenedWindowedProcesses();
+
 LIBO_API PROCESS ProcessByName(std::string processName);
 LIBO_API std::list<PROCESS> ProcessesByName(std::string processName);
+
+LIBO_API bool ProcessPathFromId(int processId);
 
 #if defined(__APPLE__) && defined(__MACH__)
 #define OPERATINGSYSTEM "Mac OS X"
