@@ -43,19 +43,22 @@
 #def MAX_PATH 1024
 #endif
 
+/**
+    The structure of a PROCESS with datas when last requested.
+*/
 LIBO_API typedef struct PROCESS {
-    long long Id;
-    std::string exeName;
-    std::string exePath;
-    int threadCount;
-    std::string windowTitle;
-    long long lifeTime;
-    //char[] icon;
-    long long cpuUsage;
-    long long memoryUsage;
-    long long networkUsage;
-    long long diskUsage;
-    std::string ownerId;
+    unsigned int Id;                ///< The process Id
+    std::string exeName;            ///< Base process executable name. e.g "devjammer.exe"
+    std::string exePath;            ///< Full path to the executable that starts the process 
+    int threadCount;                ///< Number of threads used currently by the process
+    std::string windowTitle;        ///< Title of the Window if the process is GUI 
+    unsigned int lifeTime;          ///< Unix time since the process began
+    //char[] icon;                  ///< Icon of the process if exist in array
+    unsigned int cpuUsage;          ///< Percentage of CPU used the last time the process status is requested
+    unsigned int memoryUsage;       ///< Percentage of memory used the last time the process status is requested
+    unsigned int networkUsage;      ///< Network bandwidth used the last time the process status is requested
+    unsigned int diskUsage;         ///< Percentage of disk space used the last time the process status is requested
+    unsigned int userId;            ///< The Id of the process owner/starter 
 } PROCESS;
 
 /**
@@ -63,12 +66,14 @@ LIBO_API typedef struct PROCESS {
 */
 typedef bool (*ProcessCondition)( PROCESS process, void* extraParam );
 
-LIBO_API std::list<PROCESS> RunningProcesses( ProcessCondition callbackCondition, void* extraParam );
-LIBO_API std::list<PROCESS> OpenedWindowedProcesses();
+LIBO_API std::vector<PROCESS> RunningProcesses( ProcessCondition callbackCondition, void* extraParam );
+LIBO_API std::vector<PROCESS> OpenedWindowedProcesses();
+
+bool CompareProcNameCondition( PROCESS process, void* extraParam );
 
 LIBO_API PROCESS GetProcessById( unsigned int processID );
-LIBO_API PROCESS GetProcessByName( std::string processName );
-LIBO_API std::list<PROCESS> GetProcessesByName( std::string processName );
+LIBO_API PROCESS GetProcessByName( const char* processName );
+LIBO_API std::vector<PROCESS> GetProcessesByName( const char* processName );
 
 LIBO_API bool ProcessPathFromId( int processId );
 

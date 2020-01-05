@@ -40,10 +40,10 @@ LIBO_API PROCESS GetProcessById( unsigned int processID )
 }
 
 /**
-    Get the list of running processes. The processes are returned in std::list. 
+    Get the list of running processes. The processes are returned in std::vector. 
     The first argument is a callback function that is invoked with the `PROCESS` and 
     second argument `extraParam` if it not NULL everytime a `PROCESS` is found. 
-    If the callback function returns true it is added to the `std::list<PROCESS>` to 
+    If the callback function returns true it is added to the `std::vector<PROCESS>` to 
     be returned if it returns false the `PROCESS` is not added to the return value.
     If the first and seond param is `NULL` all running process is returned
     
@@ -51,18 +51,18 @@ LIBO_API PROCESS GetProcessById( unsigned int processID )
     should be `NULL` 
     
     \code{.cpp}
-    std::list<PROCESS> processes = RunningProcesses(NULL, NULL);
+    std::vector<PROCESS> processes = RunningProcesses(NULL, NULL);
     \endcode
  
     \param callbackCondition The call back function that must return either true or false.
     \param extraParam extra parameter passed to the callbackCondition callback function if specified.
     
-    \return the std::list of running PROCESSes
+    \return the std::vector of running PROCESSes
     
 */
-LIBO_API std::list<PROCESS> RunningProcesses( ProcessCondition callbackCondition, void* extraParam ) 
+LIBO_API std::vector<PROCESS> RunningProcesses( ProcessCondition callbackCondition, void* extraParam ) 
 {
-    std::list<PROCESS> processes;
+    std::vector<PROCESS> processes;
     #ifdef _WIN32
     DWORD aProcesses[1024], cbNeeded, cProcesses;
     #else
@@ -96,36 +96,43 @@ LIBO_API std::list<PROCESS> RunningProcesses( ProcessCondition callbackCondition
     return processes;
 }
 
-LIBO_API PROCESS ProcessByName(std::string processName)
+// LIBO_API PROCESS GetProcessById( unsigned int processID )
+// {
+    // return NULL;
+// }
+
+
+/**
+
+*/
+bool CompareProcNameCondition( PROCESS process, void* extraParam )
 {
-    PROCESS proc = {};
-    std::string compare;
-    HANDLE hProcessSnap;
-    PROCESSENTRY32 pe32;
-    hProcessSnap = CreateToolhelp32Snapshot(TH32CS_SNAPPROCESS, 0);
-
-    if (hProcessSnap == INVALID_HANDLE_VALUE) {
-        proc.Id = pe32.th32ProcessID;
-        //get other datas
-    } else {
-        pe32.dwSize = sizeof(PROCESSENTRY32);
-        if (Process32First(hProcessSnap, &pe32)) {
-            if (pe32.szExeFile == processName) {
-                proc.Id = pe32.th32ProcessID;
-                //get other datas
-            } else {
-                while (Process32Next(hProcessSnap, &pe32)) { 
-                    compare = pe32.szExeFile;
-                    if (compare == processName) {
-                        proc.Id = pe32.th32ProcessID;
-                        //get other datas
-                        break;
-                    }
-                }
-            }
-            CloseHandle(hProcessSnap);
-        }
+    if (process.exeName == ((char*) extraParam))
+    {
+        return true;
     }
+    return false;
+}
 
-    return proc;
+/**
+
+*/
+LIBO_API PROCESS GetProcessByName( const char* processName )
+{
+    PROCESS process;
+    std::vector<PROCESS> processes = GetProcessesByName(processName);
+    if ( processes.size() > 0) 
+    {
+        process = processes.at(0);
+    }
+    return process;
+}
+
+
+/**
+
+*/
+LIBO_API std::vector<PROCESS> GetProcessesByName( const char* processName )
+{
+    return RunningProcesses(&CompareProcNameCondition, (void*)processName);
 }

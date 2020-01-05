@@ -10,8 +10,8 @@
 
 int main() 
 {
-    std::list<PROCESS> processes = RunningProcesses(NULL, NULL);
-    std::list<PROCESS>::iterator it; 
+    std::vector<PROCESS> processes = RunningProcesses(NULL, NULL);
+    std::vector<PROCESS>::iterator it; 
     for(it = processes.begin(); it != processes.end(); ++it) 
         std::cout << "Id=" << it->Id << "," << it->exeName << "," << it->exePath << std::endl;
     return 0;

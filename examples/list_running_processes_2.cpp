@@ -19,8 +19,8 @@ bool SpecificAppnameCondition(PROCESS process, void* extraParam )
 
 int main() 
 {
-    std::list<PROCESS> processes = RunningProcesses(&SpecificAppnameCondition, (char*)"brave.exe");
-    std::list<PROCESS>::iterator it; 
+    std::vector<PROCESS> processes = RunningProcesses(&SpecificAppnameCondition, (char*)"brave.exe");
+    std::vector<PROCESS>::iterator it; 
     for(it = processes.begin(); it != processes.end(); ++it) 
         std::cout << "Id=" << it->Id << "," << it->exeName << "," << it->exePath << std::endl;
     return 0;

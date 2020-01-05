@@ -10,7 +10,7 @@
 
 int main() 
 {
-    PROCESS process = ProcessByName("AppMarket.exe");
+    PROCESS process = GetProcessByName("javaw.exe");
     std::cout << "Id=" << process.Id << std::endl;
     return 0;
 }
