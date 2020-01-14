@@ -96,10 +96,13 @@ LIBO_API std::vector<PROCESS> RunningProcesses( ProcessCondition callbackConditi
     return processes;
 }
 
-// LIBO_API PROCESS GetProcessById( unsigned int processID )
-// {
-    // return NULL;
-// }
+/**
+
+*/
+LIBO_API PROCESS GetProcessById( unsigned int processID )
+{
+    return NULL;
+}
 
 
 /**
