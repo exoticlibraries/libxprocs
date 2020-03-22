@@ -5,7 +5,7 @@
     \date 05 January 2019
     \file libo-processes.cpp
 */
-#include <libo/libo-processes.h> 
+#include <libopen/processes.h> 
 
 LIBO_API PROCESS GetProcessById( unsigned int processID )
 {
