@@ -5,13 +5,13 @@
     \file list_running_processes.cpp
 */
 
-#include "../src/lprocesses.cpp"
+#include "../src/processes.cpp"
 #include <iostream>
 
 int main() 
 {
-    std::vector<LPROCESS> processes = RunningProcesses(NULL, NULL);
-    std::vector<LPROCESS>::iterator it; 
+    std::vector<libopen::PROCESS> processes = libopen::RunningProcesses(NULL, NULL);
+    std::vector<libopen::PROCESS>::iterator it; 
     for(it = processes.begin(); it != processes.end(); ++it) 
         std::cout << "Id=" << it->Id << "," << it->exeName << "," << it->exePath << std::endl;
     return 0;

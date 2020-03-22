@@ -5,13 +5,13 @@
     \file find_process_by_name_2.cpp
 */
 
-#include "../src/lprocesses.cpp"
+#include "../src/processes.cpp"
 #include <iostream>
 
 int main() 
 {
-    std::vector<LPROCESS> processes = GetProcessesByName("svchost.exe");
-    std::vector<LPROCESS>::iterator it; 
+    std::vector<libopen::PROCESS> processes = libopen::GetProcessesByName("svchost.exe");
+    std::vector<libopen::PROCESS>::iterator it; 
     for(it = processes.begin(); it != processes.end(); ++it) 
         std::cout << "Id=" << it->Id << "," << it->exeName << "," << it->exePath << std::endl;
     return 0;

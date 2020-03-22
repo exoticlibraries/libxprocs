@@ -5,12 +5,12 @@
     \file find_process_by_name.cpp
 */
 
-#include "../src/lprocesses.cpp"
+#include "../src/processes.cpp"
 #include <iostream>
 
 int main() 
 {
-    LPROCESS process = GetProcessById(2);
+    libopen::PROCESS process = libopen::GetProcessById(5);
     std::cout << "Id=" << process.exeName << std::endl;
     return 0;
 }

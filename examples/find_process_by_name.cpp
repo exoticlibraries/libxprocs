@@ -5,12 +5,12 @@
     \file find_process_by_name.cpp
 */
 
-#include "../src/lprocesses.cpp"
+#include "../src/processes.cpp"
 #include <iostream>
 
 int main() 
 {
-    LPROCESS process = GetProcessByName("javaw.exe");
+    libopen::PROCESS process = libopen::GetProcessByName("javaw.exe");
     std::cout << "Id=" << process.Id << std::endl;
     return 0;
 }

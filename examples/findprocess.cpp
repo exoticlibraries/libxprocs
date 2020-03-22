@@ -8,6 +8,8 @@
 #include "../src/processes.cpp"
 #include <iostream>
 
+using namespace libopen;
+
 bool SpecificAppnameCondition(PROCESS process, void* extraParam )
 {
     if (process.exeName == ((char*) extraParam))

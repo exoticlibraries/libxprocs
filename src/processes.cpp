@@ -5,14 +5,16 @@
     \date 05 January 2019
     \file processes.cpp
 */
-#include <libopen/lprocesses.h> 
+#include <libopen/processes.h> 
 
-LIBOPEN_API LPROCESS GetProcessById( unsigned int processID )
+namespace libopen {
+
+LIBOPEN_API PROCESS GetProcessById( unsigned int processID )
 {
-    LPROCESS p; 
+    PROCESS p; 
     p.Id = processID;
     #ifdef _WIN32
-    HANDLE hProcess = OpenProcess( LPROCESS_QUERY_INFORMATION | LPROCESS_VM_READ, FALSE, processID );
+    HANDLE hProcess = OpenProcess( PROCESS_QUERY_INFORMATION | PROCESS_VM_READ, FALSE, processID );
     if ( hProcess != NULL )
     {
         HMODULE hMod;
@@ -41,28 +43,28 @@ LIBOPEN_API LPROCESS GetProcessById( unsigned int processID )
 
 /**
     Get the list of running processes. The processes are returned in std::vector. 
-    The first argument is a callback function that is invoked with the `LPROCESS` and 
-    second argument `extraParam` if it not NULL everytime a `LPROCESS` is found. 
-    If the callback function returns true it is added to the `std::vector<LPROCESS>` to 
-    be returned if it returns false the `LPROCESS` is not added to the return value.
+    The first argument is a callback function that is invoked with the `PROCESS` and 
+    second argument `extraParam` if it not NULL everytime a `PROCESS` is found. 
+    If the callback function returns true it is added to the `std::vector<PROCESS>` to 
+    be returned if it returns false the `PROCESS` is not added to the return value.
     If the first and seond param is `NULL` all running process is returned
     
     To get all the processes without any condition or calback the first and second parameters 
     should be `NULL` 
     
     \code{.cpp}
-    std::vector<LPROCESS> processes = RunningProcesses(NULL, NULL);
+    std::vector<PROCESS> processes = RunningProcesses(NULL, NULL);
     \endcode
  
     \param callbackCondition The call back function that must return either true or false.
     \param extraParam extra parameter passed to the callbackCondition callback function if specified.
     
-    \return the std::vector of running LPROCESSes
+    \return the std::vector of running PROCESSes
     
 */
-LIBOPEN_API std::vector<LPROCESS> RunningProcesses( ProcessCondition callbackCondition, void* extraParam ) 
+LIBOPEN_API std::vector<PROCESS> RunningProcesses( ProcessCondition callbackCondition, void* extraParam ) 
 {
-    std::vector<LPROCESS> processes;
+    std::vector<PROCESS> processes;
     #ifdef _WIN32
     DWORD aProcesses[1024], cbNeeded, cProcesses;
     #else
@@ -79,7 +81,7 @@ LIBOPEN_API std::vector<LPROCESS> RunningProcesses( ProcessCondition callbackCon
     {
         if( aProcesses[i] != 0 )
         {
-            LPROCESS p = GetProcessById((unsigned int)aProcesses[i] );
+            PROCESS p = GetProcessById((unsigned int)aProcesses[i] );
             if ( callbackCondition != NULL )
             {
                 if (callbackCondition(p, extraParam) == true) {
@@ -100,7 +102,7 @@ LIBOPEN_API std::vector<LPROCESS> RunningProcesses( ProcessCondition callbackCon
 /**
 
 */
-bool CompareProcNameCondition( LPROCESS process, void* extraParam )
+bool CompareProcNameCondition( PROCESS process, void* extraParam )
 {
     if (process.exeName == ((char*) extraParam))
     {
@@ -112,10 +114,10 @@ bool CompareProcNameCondition( LPROCESS process, void* extraParam )
 /**
 
 */
-LIBOPEN_API LPROCESS GetProcessByName( const char* processName )
+LIBOPEN_API PROCESS GetProcessByName( const char* processName )
 {
-    LPROCESS process;
-    std::vector<LPROCESS> processes = GetProcessesByName(processName);
+    PROCESS process;
+    std::vector<PROCESS> processes = GetProcessesByName(processName);
     if ( processes.size() > 0) 
     {
         process = processes.at(0);
@@ -127,7 +129,9 @@ LIBOPEN_API LPROCESS GetProcessByName( const char* processName )
 /**
 
 */
-LIBOPEN_API std::vector<LPROCESS> GetProcessesByName( const char* processName )
+LIBOPEN_API std::vector<PROCESS> GetProcessesByName( const char* processName )
 {
     return RunningProcesses(&CompareProcNameCondition, (void*)processName);
+}
+
 }

@@ -6,10 +6,9 @@
     \file processes.h
 */
 
-#ifndef LIBOPEN_LPROCESSES_H
-#define LIBOPEN_LPROCESSES_H
+#ifndef LIBOPEN_PROCESSES_H
+#define LIBOPEN_PROCESSES_H
 
-#include <list> 
 #include <iterator> 
 #include <string>
 #include <vector>
@@ -28,12 +27,12 @@
 #undef _WIN32_WINNT
 #endif
 #define _WIN32_WINNT 0x502
-#define LIBOPENLPROCESSES_WINDLLEXPORT 1
+#define LIBOPENPROCESSES_WINDLLEXPORT 1
 /* Linux */
 #else
-#define LIBOPENLPROCESSES_WINDLLEXPORT 0
+#define LIBOPENPROCESSES_WINDLLEXPORT 0
 #endif
-#if LIBOPENLPROCESSES_WINDLLEXPORT
+#if LIBOPENPROCESSES_WINDLLEXPORT
 #define LIBOPEN_API __declspec(dllexport)
 #else
 #define LIBOPEN_API extern
@@ -43,10 +42,12 @@
 #def MAX_PATH 1024
 #endif
 
+namespace libopen {
+
 /**
-    The structure of a LPROCESS with datas when last requested.
+    The structure of a PROCESS with datas when last requested.
 */
-LIBOPEN_API typedef struct LPROCESS {
+LIBOPEN_API typedef struct PROCESS {
     unsigned int Id;                ///< The process Id
     std::string exeName;            ///< Base process executable name. e.g "devjammer.exe"
     std::string exePath;            ///< Full path to the executable that starts the process 
@@ -59,21 +60,21 @@ LIBOPEN_API typedef struct LPROCESS {
     unsigned int networkUsage;      ///< Network bandwidth used the last time the process status is requested
     unsigned int diskUsage;         ///< Percentage of disk space used the last time the process status is requested
     unsigned int userId;            ///< The Id of the process owner/starter 
-} LPROCESS;
+} PROCESS;
 
 /**
     if it returns true the find process loop continue
 */
-typedef bool (*ProcessCondition)( LPROCESS process, void* extraParam );
+typedef bool (*ProcessCondition)( PROCESS process, void* extraParam );
 
-LIBOPEN_API std::vector<LPROCESS> RunningProcesses( ProcessCondition callbackCondition, void* extraParam );
-LIBOPEN_API std::vector<LPROCESS> OpenedWindowedProcesses();
+LIBOPEN_API std::vector<PROCESS> RunningProcesses( ProcessCondition callbackCondition, void* extraParam );
+LIBOPEN_API std::vector<PROCESS> OpenedWindowedProcesses();
 
-bool CompareProcNameCondition( LPROCESS process, void* extraParam );
+bool CompareProcNameCondition( PROCESS process, void* extraParam );
 
-LIBOPEN_API LPROCESS GetProcessById( unsigned int processID );
-LIBOPEN_API LPROCESS GetProcessByName( const char* processName );
-LIBOPEN_API std::vector<LPROCESS> GetProcessesByName( const char* processName );
+LIBOPEN_API PROCESS GetProcessById( unsigned int processID );
+LIBOPEN_API PROCESS GetProcessByName( const char* processName );
+LIBOPEN_API std::vector<PROCESS> GetProcessesByName( const char* processName );
 
 LIBOPEN_API bool ProcessPathFromId( int processId );
 
@@ -83,5 +84,7 @@ defined (_WIN32) || defined(_WIN64) || defined(_WINDOWS)
 #def _WIN32
 #endif
 #endif
+
+}
 
 #endif

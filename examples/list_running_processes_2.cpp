@@ -5,10 +5,12 @@
     \file list_running_processes_2.cpp
 */
 
-#include "../src/lprocesses.cpp"
+#include "../src/processes.cpp"
 #include <iostream>
 
-bool SpecificAppnameCondition(LPROCESS process, void* extraParam )
+using namespace libopen;
+
+bool SpecificAppnameCondition(PROCESS process, void* extraParam )
 {
     if (process.exeName == ((char*) extraParam))
     {
@@ -19,8 +21,8 @@ bool SpecificAppnameCondition(LPROCESS process, void* extraParam )
 
 int main() 
 {
-    std::vector<LPROCESS> processes = RunningProcesses(&SpecificAppnameCondition, (char*)"brave.exe");
-    std::vector<LPROCESS>::iterator it; 
+    std::vector<PROCESS> processes = RunningProcesses(&SpecificAppnameCondition, (char*)"brave.exe");
+    std::vector<PROCESS>::iterator it; 
     for(it = processes.begin(); it != processes.end(); ++it) 
         std::cout << "Id=" << it->Id << "," << it->exeName << "," << it->exePath << std::endl;
     return 0;
