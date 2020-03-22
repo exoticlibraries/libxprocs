@@ -5,7 +5,7 @@
     \file list_running_processes_2.cpp
 */
 
-#include "../src/libo-processes.cpp"
+#include "../src/processes.cpp"
 #include <iostream>
 
 bool SpecificAppnameCondition(PROCESS process, void* extraParam )

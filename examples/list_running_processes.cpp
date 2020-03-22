@@ -16,3 +16,5 @@ int main()
         std::cout << "Id=" << it->Id << "," << it->exeName << "," << it->exePath << std::endl;
     return 0;
 }
+
+// g++ list_running_processes.cpp -I../include/ -lpsapi

@@ -5,7 +5,7 @@
     \file find_process_by_name_2.cpp
 */
 
-#include "../src/libo-processes.cpp"
+#include "../src/processes.cpp"
 #include <iostream>
 
 int main() 
