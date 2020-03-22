@@ -5,7 +5,7 @@
     \file list_running_processes.cpp
 */
 
-#include "../src/processes.cpp"
+#include "../src/lprocesses.cpp"
 #include <iostream>
 
 int main() 

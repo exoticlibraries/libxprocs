@@ -5,7 +5,7 @@
     \file find_process_by_name.cpp
 */
 
-#include "../src/processes.cpp"
+#include "../src/lprocesses.cpp"
 #include <iostream>
 
 int main() 

@@ -5,7 +5,7 @@
     \file list_running_processes_2.cpp
 */
 
-#include "../src/processes.cpp"
+#include "../src/lprocesses.cpp"
 #include <iostream>
 
 bool SpecificAppnameCondition(LPROCESS process, void* extraParam )
