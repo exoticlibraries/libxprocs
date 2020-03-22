@@ -13,6 +13,6 @@ int main()
     std::vector<libopen::PROCESS> processes = libopen::GetProcessesByName("svchost.exe");
     std::vector<libopen::PROCESS>::iterator it; 
     for(it = processes.begin(); it != processes.end(); ++it) 
-        std::cout << "Id=" << it->Id << "," << it->exeName << "," << it->exePath << std::endl;
+        std::cout << libopen::ProcessToString(*it) << std::endl;
     return 0;
 }

@@ -11,6 +11,6 @@
 int main() 
 {
     libopen::PROCESS process = libopen::GetProcessByName("javaw.exe");
-    std::cout << "Id=" << process.Id << std::endl;
+    std::cout << libopen::ProcessToString(process) << std::endl;
     return 0;
 }

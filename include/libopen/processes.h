@@ -60,7 +60,7 @@ LIBOPEN_API typedef struct PROCESS {
     unsigned int diskUsage;         ///< Percentage of disk space used the last time the process status is requested
     unsigned int userId;            ///< The Id of the process owner/starter  
     unsigned int lifeTime;          ///< Unix time since the process began
-    int threadCount;                ///< Number of threads used currently by the process
+    unsigned int threadCount;                ///< Number of threads used currently by the process
     std::string exeName;            ///< Base process executable name. e.g "devjamme
     std::string exePath;            ///< Full path to the executable that starts the process
     std::string windowTitle;        ///< Title of the Window if the process is GUI 
@@ -78,12 +78,13 @@ LIBOPEN_API std::vector<PROCESS> OpenedWindowedProcesses();
 
 bool CompareProcNameCondition( PROCESS process, void* extraParam );
 
+LIBOPEN_API void InitProcess( PROCESS *process );
 LIBOPEN_API PROCESS GetProcessById( unsigned int processID );
 LIBOPEN_API PROCESS GetProcessByName( const char* processName );
 LIBOPEN_API std::vector<PROCESS> GetProcessesByName( const char* processName );
 
 LIBOPEN_API std::string ProcessPathFromId( int processId );
-LIBOPEN_API std::string process_to_string( PROCESS process);
+LIBOPEN_API std::string ProcessToString( PROCESS process);
 
 #if defined(__WIN32__) || defined(__WINDOWS__) || defined(_MSC_VER) || \
 defined (_WIN32) || defined(_WIN64) || defined(_WINDOWS)

@@ -6,12 +6,31 @@
     \file processes.cpp
 */
 #include <libopen/processes.h> 
+#include <iostream>
 
 namespace libopen {
 
+/**
+ */
+LIBOPEN_API void InitProcess( PROCESS *process ) 
+{
+    process->status = PROCESS_STATUS::UNKNOWN;
+    process->Id = 0;
+    process->cpuUsage = 0;
+    process->memoryUsage = 0;
+    process->networkUsage = 0;
+    process->diskUsage = 0;
+    process->userId = 0;
+    process->lifeTime = 0;
+    process->threadCount = 1;
+}
+
+/**
+ */
 LIBOPEN_API PROCESS GetProcessById( unsigned int processID )
 {
     PROCESS p; 
+    InitProcess(&p);
     p.status = PROCESS_STATUS::RUNNING;
     p.Id = processID;
     #ifdef _WIN32
@@ -118,12 +137,13 @@ bool CompareProcNameCondition( PROCESS process, void* extraParam )
 LIBOPEN_API PROCESS GetProcessByName( const char* processName )
 {
     PROCESS process;
+    InitProcess(&process);
     std::vector<PROCESS> processes = GetProcessesByName(processName);
     if ( processes.size() > 0) 
     {
         process = processes.at(0);
+        processes.clear();
     }
-    //TODO: destroy other processes in the list
     return process;
 }
 
@@ -144,27 +164,27 @@ LIBOPEN_API std::string ProcessPathFromId( int processId )
     return GetProcessById(processId).exePath;
 }
 
-LIBOPEN_API std::string process_to_string( PROCESS process )
+LIBOPEN_API std::string ProcessToString( PROCESS process )
 {
     std::string str_value;
-    if (process.status|PROCESS_STATUS::UNKNOWN != 0) {
-        str_value += "Id=";
-        str_value += std::to_string(process.Id);
-        str_value += ",ExeName=";
-        str_value += process.exeName.c_str();
-        str_value += ",ExePath=";
-        str_value += process.exePath.c_str();
-        str_value += ",ThreadCount=";
-        str_value += std::to_string(process.threadCount);
-        str_value += ",LifeTime=";
-        str_value += std::to_string(process.lifeTime);
-        str_value += ",CpuUsage=";
-        str_value += std::to_string(process.cpuUsage);
-        str_value += ",DiskUsage=";
-        str_value += std::to_string(process.diskUsage);
-        str_value += ",MemoryUsage=";
-        str_value += std::to_string(process.memoryUsage);
-    }
+    str_value += "Id=";
+    str_value += std::to_string(process.Id);
+    str_value += ",Status=";
+    str_value += std::to_string(process.status);
+    str_value += ",ExeName=";
+    str_value += process.exeName.c_str();
+    str_value += ",ExePath=";
+    str_value += process.exePath.c_str();
+    str_value += ",ThreadCount=";
+    str_value += std::to_string(process.threadCount);
+    str_value += ",LifeTime=";
+    str_value += std::to_string(process.lifeTime);
+    str_value += ",CpuUsage=";
+    str_value += std::to_string(process.cpuUsage);
+    str_value += ",DiskUsage=";
+    str_value += std::to_string(process.diskUsage);
+    str_value += ",MemoryUsage=";
+    str_value += std::to_string(process.memoryUsage);
     return str_value;
 }
 

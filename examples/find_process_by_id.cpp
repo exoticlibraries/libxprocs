@@ -17,7 +17,7 @@ int main(int argc, char** argv)
     int id = std::atoi(argv[1]);
     libopen::PROCESS process = libopen::GetProcessById(id);
     if (process.status|libopen::UNKNOWN != 0) {
-        std::cout << libopen::process_to_string(process) << std::endl;
+        std::cout << libopen::ProcessToString(process) << std::endl;
     } else {
         std::cerr << "Cannot find the process with id " << id << std::endl;
     }
