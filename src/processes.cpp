@@ -5,7 +5,7 @@
     \date 05 January 2019
     \file processes.cpp
 */
-#include <libopenpen/processes.h> 
+#include <libopen/processes.h> 
 
 LIBOPEN_API PROCESS GetProcessById( unsigned int processID )
 {
