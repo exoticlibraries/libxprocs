@@ -12,6 +12,7 @@ namespace libopen {
 LIBOPEN_API PROCESS GetProcessById( unsigned int processID )
 {
     PROCESS p; 
+    p.status = PROCESS_STATUS::RUNNING;
     p.Id = processID;
     #ifdef _WIN32
     HANDLE hProcess = OpenProcess( PROCESS_QUERY_INFORMATION | PROCESS_VM_READ, FALSE, processID );
@@ -141,6 +142,30 @@ LIBOPEN_API std::vector<PROCESS> GetProcessesByName( const char* processName )
 LIBOPEN_API std::string ProcessPathFromId( int processId ) 
 {
     return GetProcessById(processId).exePath;
+}
+
+LIBOPEN_API std::string process_to_string( PROCESS process )
+{
+    std::string str_value;
+    if (process.status|PROCESS_STATUS::UNKNOWN != 0) {
+        str_value += "Id=";
+        str_value += std::to_string(process.Id);
+        str_value += ",ExeName=";
+        str_value += process.exeName.c_str();
+        str_value += ",ExePath=";
+        str_value += process.exePath.c_str();
+        str_value += ",ThreadCount=";
+        str_value += std::to_string(process.threadCount);
+        str_value += ",LifeTime=";
+        str_value += std::to_string(process.lifeTime);
+        str_value += ",CpuUsage=";
+        str_value += std::to_string(process.cpuUsage);
+        str_value += ",DiskUsage=";
+        str_value += std::to_string(process.diskUsage);
+        str_value += ",MemoryUsage=";
+        str_value += std::to_string(process.memoryUsage);
+    }
+    return str_value;
 }
 
 }

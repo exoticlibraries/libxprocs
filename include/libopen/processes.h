@@ -44,22 +44,28 @@
 
 namespace libopen {
 
+enum PROCESS_STATUS {
+    UNKNOWN = 0,              // The status of the process is unknow or the PROCESS struct is unintialized
+    RUNNING = 1,              // The process is currently running
+};
+
 /**
     The structure of a PROCESS with datas when last requested.
 */
 LIBOPEN_API typedef struct PROCESS {
     unsigned int Id;                ///< The process Id
-    std::string exeName;            ///< Base process executable name. e.g "devjammer.exe"
-    std::string exePath;            ///< Full path to the executable that starts the process 
-    int threadCount;                ///< Number of threads used currently by the process
-    std::string windowTitle;        ///< Title of the Window if the process is GUI 
-    unsigned int lifeTime;          ///< Unix time since the process began
-    //char[] icon;                  ///< Icon of the process if exist in array
     unsigned int cpuUsage;          ///< Percentage of CPU used the last time the process status is requested
     unsigned int memoryUsage;       ///< Percentage of memory used the last time the process status is requested
     unsigned int networkUsage;      ///< Network bandwidth used the last time the process status is requested
     unsigned int diskUsage;         ///< Percentage of disk space used the last time the process status is requested
-    unsigned int userId;            ///< The Id of the process owner/starter 
+    unsigned int userId;            ///< The Id of the process owner/starter  
+    unsigned int lifeTime;          ///< Unix time since the process began
+    int threadCount;                ///< Number of threads used currently by the process
+    std::string exeName;            ///< Base process executable name. e.g "devjamme
+    std::string exePath;            ///< Full path to the executable that starts the process
+    std::string windowTitle;        ///< Title of the Window if the process is GUI 
+    PROCESS_STATUS status;          ///< the status of the processr.exe"
+    //char[] icon;                  ///< Icon of the process if exist in array
 } PROCESS;
 
 /**
@@ -77,6 +83,7 @@ LIBOPEN_API PROCESS GetProcessByName( const char* processName );
 LIBOPEN_API std::vector<PROCESS> GetProcessesByName( const char* processName );
 
 LIBOPEN_API std::string ProcessPathFromId( int processId );
+LIBOPEN_API std::string process_to_string( PROCESS process);
 
 #if defined(__WIN32__) || defined(__WINDOWS__) || defined(_MSC_VER) || \
 defined (_WIN32) || defined(_WIN64) || defined(_WINDOWS)
