@@ -10,7 +10,7 @@
 
 int main() 
 {
-    PROCESS process = GetProcessById(1);
+    LPROCESS process = GetProcessById(2);
     std::cout << "Id=" << process.exeName << std::endl;
     return 0;
 }

@@ -10,7 +10,7 @@
 
 int main() 
 {
-    PROCESS process = GetProcessByName("javaw.exe");
+    LPROCESS process = GetProcessByName("javaw.exe");
     std::cout << "Id=" << process.Id << std::endl;
     return 0;
 }
