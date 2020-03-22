@@ -1,8 +1,8 @@
 /**
     \copyright GNU General Public License v3.0 Copyright (c) 2019, Adewale Azeez 
     \author Adewale Azeez <azeezadewale98@gmail.com>
-    \date 05 January 2019
-    \file find_process_by_name.cpp
+    \date 23 March 2020
+    \file find_process_path_by_id.cpp
 */
 
 #include "../src/processes.cpp"
@@ -15,12 +15,14 @@ int main(int argc, char** argv)
         return 1;
     }
     int id = std::atoi(argv[1]);
-    libopen::PROCESS process = libopen::GetProcessById(id);
-    if (&process != NULL) {
-        std::cout << libopen::ProcessToString(process) << std::endl;
+    std::string path = libopen::ProcessPathFromId(id);
+    if (path.length() > 0) {
+        std::cout << "Id=" << id << ",ProcessPath=" << path << std::endl;
     } else {
         std::cerr << "Cannot find the process with id " << id << std::endl;
     }
     return 0;
-    return 0;
 }
+
+
+//Win: g++ findprocess.cpp -I../include/ -lpsapi

@@ -1,8 +1,8 @@
 /**
     \copyright GNU General Public License v3.0 Copyright (c) 2019, Adewale Azeez 
     \author Adewale Azeez <azeezadewale98@gmail.com>
-    \date 06 January 2019
-    \file list_running_processes_2.cpp
+    \date 23 March 2020
+    \file findprocess.cpp
 */
 
 #include "../src/processes.cpp"
@@ -32,4 +32,4 @@ int main()
     return 0;
 }
 
-// g++ findprocess.cpp -I../include/ -lpsapi
+// Win: g++ findprocess.cpp -I../include/ -lpsapi

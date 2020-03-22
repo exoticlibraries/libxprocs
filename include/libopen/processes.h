@@ -76,7 +76,7 @@ LIBOPEN_API PROCESS GetProcessById( unsigned int processID );
 LIBOPEN_API PROCESS GetProcessByName( const char* processName );
 LIBOPEN_API std::vector<PROCESS> GetProcessesByName( const char* processName );
 
-LIBOPEN_API bool ProcessPathFromId( int processId );
+LIBOPEN_API std::string ProcessPathFromId( int processId );
 
 #if defined(__WIN32__) || defined(__WINDOWS__) || defined(_MSC_VER) || \
 defined (_WIN32) || defined(_WIN64) || defined(_WINDOWS)

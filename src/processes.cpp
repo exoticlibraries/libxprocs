@@ -122,6 +122,7 @@ LIBOPEN_API PROCESS GetProcessByName( const char* processName )
     {
         process = processes.at(0);
     }
+    //TODO: destroy other processes in the list
     return process;
 }
 
@@ -132,6 +133,14 @@ LIBOPEN_API PROCESS GetProcessByName( const char* processName )
 LIBOPEN_API std::vector<PROCESS> GetProcessesByName( const char* processName )
 {
     return RunningProcesses(&CompareProcNameCondition, (void*)processName);
+}
+
+/**
+
+*/
+LIBOPEN_API std::string ProcessPathFromId( int processId ) 
+{
+    return GetProcessById(processId).exePath;
 }
 
 }
