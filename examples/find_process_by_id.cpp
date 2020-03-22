@@ -11,6 +11,6 @@
 int main() 
 {
     PROCESS process = GetProcessById(1);
-    std::cout << "Id=" << process.Id << std::endl;
+    std::cout << "Id=" << process.exeName << std::endl;
     return 0;
 }

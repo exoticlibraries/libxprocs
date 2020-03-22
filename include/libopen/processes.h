@@ -3,11 +3,11 @@
     \copyright GNU General Public License v3.0 Copyright (c) 2019, Adewale Azeez 
     \author Adewale Azeez <azeezadewale98@gmail.com>
     \date 05 January 2019
-    \file libo-processes.h
+    \file processes.h
 */
 
-#ifndef LIBO_PROCESSES_H
-#define LIBO_PROCESSES_H
+#ifndef LIBOPEN_PROCESSES_H
+#define LIBOPEN_PROCESSES_H
 
 #include <list> 
 #include <iterator> 
@@ -28,15 +28,15 @@
 #undef _WIN32_WINNT
 #endif
 #define _WIN32_WINNT 0x502
-#define LIBOPROCESSES_WINDLLEXPORT 1
+#define LIBOPENPROCESSES_WINDLLEXPORT 1
 /* Linux */
 #else
-#define LIBOPROCESSES_WINDLLEXPORT 0
+#define LIBOPENPROCESSES_WINDLLEXPORT 0
 #endif
-#if LIBOPROCESSES_WINDLLEXPORT
-#define LIBO_API __declspec(dllexport)
+#if LIBOPENPROCESSES_WINDLLEXPORT
+#define LIBOPEN_API __declspec(dllexport)
 #else
-#define LIBO_API extern
+#define LIBOPEN_API extern
 #endif
 
 #ifndef MAX_PATH
@@ -46,7 +46,7 @@
 /**
     The structure of a PROCESS with datas when last requested.
 */
-LIBO_API typedef struct PROCESS {
+LIBOPEN_API typedef struct PROCESS {
     unsigned int Id;                ///< The process Id
     std::string exeName;            ///< Base process executable name. e.g "devjammer.exe"
     std::string exePath;            ///< Full path to the executable that starts the process 
@@ -66,16 +66,16 @@ LIBO_API typedef struct PROCESS {
 */
 typedef bool (*ProcessCondition)( PROCESS process, void* extraParam );
 
-LIBO_API std::vector<PROCESS> RunningProcesses( ProcessCondition callbackCondition, void* extraParam );
-LIBO_API std::vector<PROCESS> OpenedWindowedProcesses();
+LIBOPEN_API std::vector<PROCESS> RunningProcesses( ProcessCondition callbackCondition, void* extraParam );
+LIBOPEN_API std::vector<PROCESS> OpenedWindowedProcesses();
 
 bool CompareProcNameCondition( PROCESS process, void* extraParam );
 
-LIBO_API PROCESS GetProcessById( unsigned int processID );
-LIBO_API PROCESS GetProcessByName( const char* processName );
-LIBO_API std::vector<PROCESS> GetProcessesByName( const char* processName );
+LIBOPEN_API PROCESS GetProcessById( unsigned int processID );
+LIBOPEN_API PROCESS GetProcessByName( const char* processName );
+LIBOPEN_API std::vector<PROCESS> GetProcessesByName( const char* processName );
 
-LIBO_API bool ProcessPathFromId( int processId );
+LIBOPEN_API bool ProcessPathFromId( int processId );
 
 #if defined(__WIN32__) || defined(__WINDOWS__) || defined(_MSC_VER) || \
 defined (_WIN32) || defined(_WIN64) || defined(_WINDOWS)

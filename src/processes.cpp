@@ -3,11 +3,11 @@
     \copyright GNU General Public License v3.0 Copyright (c) 2019, Adewale Azeez 
     \author Adewale Azeez <azeezadewale98@gmail.com>
     \date 05 January 2019
-    \file libo-processes.cpp
+    \file processes.cpp
 */
-#include <libopen/processes.h> 
+#include <libopenpen/processes.h> 
 
-LIBO_API PROCESS GetProcessById( unsigned int processID )
+LIBOPEN_API PROCESS GetProcessById( unsigned int processID )
 {
     PROCESS p; 
     p.Id = processID;
@@ -60,7 +60,7 @@ LIBO_API PROCESS GetProcessById( unsigned int processID )
     \return the std::vector of running PROCESSes
     
 */
-LIBO_API std::vector<PROCESS> RunningProcesses( ProcessCondition callbackCondition, void* extraParam ) 
+LIBOPEN_API std::vector<PROCESS> RunningProcesses( ProcessCondition callbackCondition, void* extraParam ) 
 {
     std::vector<PROCESS> processes;
     #ifdef _WIN32
@@ -112,7 +112,7 @@ bool CompareProcNameCondition( PROCESS process, void* extraParam )
 /**
 
 */
-LIBO_API PROCESS GetProcessByName( const char* processName )
+LIBOPEN_API PROCESS GetProcessByName( const char* processName )
 {
     PROCESS process;
     std::vector<PROCESS> processes = GetProcessesByName(processName);
@@ -127,7 +127,7 @@ LIBO_API PROCESS GetProcessByName( const char* processName )
 /**
 
 */
-LIBO_API std::vector<PROCESS> GetProcessesByName( const char* processName )
+LIBOPEN_API std::vector<PROCESS> GetProcessesByName( const char* processName )
 {
     return RunningProcesses(&CompareProcNameCondition, (void*)processName);
 }
