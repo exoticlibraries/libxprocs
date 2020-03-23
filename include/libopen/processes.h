@@ -14,6 +14,7 @@
 #include <vector>
 #ifdef USE_HACKY_PROCESSES_MONITOR
 #include <map>
+#include <set>
 #endif
 
 #ifdef _WIN32
@@ -92,7 +93,9 @@ bool CompareProcPathLikeCondition( PROCESS process, void* extraParam );
 LIBOPEN_API void InitProcess( PROCESS *process );
 LIBOPEN_API PROCESS GetProcessById( unsigned int processID );
 LIBOPEN_API PROCESS GetProcessByName( const char* processName );
+LIBOPEN_API PROCESS GetProcessByPart( const char* processName );
 LIBOPEN_API std::vector<PROCESS> GetProcessesByName( const char* processName );
+LIBOPEN_API std::vector<PROCESS> GetProcessesByPart( const char* processName );
 LIBOPEN_API std::string GetProcessPathFromId( int processId );
 
 LIBOPEN_API std::string ProcessToString( PROCESS process);
@@ -104,6 +107,7 @@ LIBOPEN_API std::string ProcessToString( PROCESS process);
 
 #ifdef USE_HACKY_PROCESSES_MONITOR
 LIBOPEN_API void Hacky_MonitorProcess( const char* processName, ProcessStatusChanged processStatusCallback, void* extraParam );
+LIBOPEN_API void Hacky_MonitorProcesses( const char* processName, ProcessStatusChanged processStatusCallback, void* extraParam );
 #endif
 
 #if defined(__WIN32__) || defined(__WINDOWS__) || defined(_MSC_VER) || \

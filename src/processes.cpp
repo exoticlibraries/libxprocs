@@ -144,6 +144,14 @@ LIBOPEN_API PROCESS GetProcessByName( const char* processName )
 }
 
 /**
+    //TODO: possibly return the first process spawned
+*/
+LIBOPEN_API std::vector<PROCESS> GetProcessesByName( const char* processName )
+{
+    return RunningProcesses(&CompareProcNameCondition, (void*)processName);
+}
+
+/**
 
 */
 bool CompareProcPathLikeCondition( PROCESS process, void* extraParam )
@@ -152,14 +160,15 @@ bool CompareProcPathLikeCondition( PROCESS process, void* extraParam )
 }
 
 /**
-
+    Get the first process by part of the execuitable path value `PROCESS.exePath`
+    //TODO: possibly return the first process spawned
 */
-LIBOPEN_API PROCESS GetProcessByPathLike( const char* processName )
+LIBOPEN_API PROCESS GetProcessByPart( const char* processName )
 {
     PROCESS process;
     InitProcess(&process);
     process.exeName = processName;
-    std::vector<PROCESS> processes = GetProcessesByName(processName);
+    std::vector<PROCESS> processes = GetProcessesByPart(processName);
     if ( processes.size() > 0) 
     {
         process = processes.at(0);
@@ -171,9 +180,9 @@ LIBOPEN_API PROCESS GetProcessByPathLike( const char* processName )
 /**
 
 */
-LIBOPEN_API std::vector<PROCESS> GetProcessesByName( const char* processName )
+LIBOPEN_API std::vector<PROCESS> GetProcessesByPart( const char* processName )
 {
-    return RunningProcesses(&CompareProcNameCondition, (void*)processName);
+    return RunningProcesses(&CompareProcPathLikeCondition, (void*)processName);
 }
 
 /**
@@ -220,7 +229,7 @@ LIBOPEN_API void Hacky_MonitorProcess( const char* processName, ProcessStatusCha
     std::map<std::string, PROCESS_STATUS> mapOfProcess;
     PROCESS process;
     do {
-        process = GetProcessByPathLike(processName);
+        process = GetProcessByPart(processName);
         if (process.status == PROCESS_STATUS::UNKNOWN) {
             if (mapOfProcess.find(process.exeName) != mapOfProcess.end()) {
                 if (mapOfProcess[process.exeName] != PROCESS_STATUS::STOPPED) {
@@ -244,6 +253,60 @@ LIBOPEN_API void Hacky_MonitorProcess( const char* processName, ProcessStatusCha
             if (processStatusCallback != NULL) {
                 processStatusCallback(process, extraParam);
             }
+    } while(true);
+}
+
+LIBOPEN_API void Hacky_MonitorProcesses( const char* processName, ProcessStatusChanged processStatusCallback, void* extraParam )
+{
+    std::map<std::string, PROCESS> mapOfProcess;
+    std::vector<PROCESS> processes;
+    PROCESS process;
+    do {
+        processes = GetProcessesByPart(processName);
+        std::vector<PROCESS>::iterator it; 
+        std::set<std::string> found_processes;
+        for(it = processes.begin(); it != processes.end(); ++it) {
+            process = *it;
+            found_processes.insert(process.exeName);
+            if (process.status == PROCESS_STATUS::UNKNOWN) {
+                if (mapOfProcess.find(process.exeName) != mapOfProcess.end()) {
+                    if (mapOfProcess[process.exeName].status != PROCESS_STATUS::STOPPED) {
+                        process.status = PROCESS_STATUS::STOPPED;
+                    }
+                    mapOfProcess.erase(process.exeName);
+                }
+                goto report_process_status;
+            }
+            if (mapOfProcess.find(process.exeName) == mapOfProcess.end()) {
+                mapOfProcess.insert(std::make_pair(process.exeName, process));
+                mapOfProcess[process.exeName].status = PROCESS_STATUS::STARTED;
+            }
+            goto report_process_status;
+            
+            continue;
+            report_process_status:
+                if (processStatusCallback != NULL) {
+                    processStatusCallback(mapOfProcess[process.exeName], extraParam);
+                    mapOfProcess[process.exeName].status = process.status;
+                }
+        }
+        if (mapOfProcess.size() != processes.size()) {
+            std::map<std::string, PROCESS>::iterator it;
+            for (it = mapOfProcess.begin(); it != mapOfProcess.end(); it++ )
+            {
+                if (found_processes.find(it->first) == found_processes.end())
+                {
+                    if (mapOfProcess[it->first].status != PROCESS_STATUS::STOPPED) {
+                        mapOfProcess[it->first].status = PROCESS_STATUS::STOPPED;
+                    }
+                    if (processStatusCallback != NULL) {
+                        processStatusCallback(mapOfProcess[it->first], extraParam);
+                    }
+                    mapOfProcess.erase(it->first);
+                }
+            }
+        }
+        found_processes.clear();
     } while(true);
 }
 
