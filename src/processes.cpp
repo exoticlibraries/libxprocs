@@ -45,9 +45,9 @@ LIBOPEN_API PROCESS GetProcessById( unsigned int processID )
             TCHAR szProcessPath[MAX_PATH] = TEXT("");
             
             GetModuleBaseName( hProcess, hMod, szProcessName, sizeof(szProcessName)/sizeof(TCHAR) );
-            GetModuleFileNameExA( hProcess, hMod, szProcessPath, sizeof(szProcessPath)/sizeof(TCHAR) );
-            p.exeName = szProcessName;
-            p.exePath = szProcessPath;
+            GetModuleFileNameExA( hProcess, hMod, (LPSTR)szProcessPath, sizeof(szProcessPath)/sizeof(TCHAR) );
+            p.exeName = (char *)szProcessName;
+            p.exePath = (char *)szProcessPath;
             
             
             ZeroMemory( szProcessName, sizeof(szProcessName) );
