@@ -196,14 +196,12 @@ LIBOPEN_API std::string ProcessToString( PROCESS process )
 
 #ifdef USE_HACKY_PROCESSES_MONITOR
 
-//also by Id
 LIBOPEN_API void Hacky_MonitorProcess( const char* processName, ProcessStatusChanged processStatusCallback, void* extraParam )
 {
     std::map<std::string, PROCESS_STATUS> mapOfProcess;
     PROCESS process;
     do {
         process = GetProcessByName(processName);
-        //std::cout << ProcessToString(process) << std::endl;
         if (process.status == PROCESS_STATUS::UNKNOWN) {
             if (mapOfProcess.find(process.exeName) != mapOfProcess.end()) {
                 if (mapOfProcess[process.exeName] != PROCESS_STATUS::STOPPED) {

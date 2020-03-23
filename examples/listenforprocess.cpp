@@ -16,11 +16,11 @@ void ProcessStatusChange(PROCESS process, void* extraParam)
 {
     if (process.status == PROCESS_STATUS::STARTED)
     {
-        std::cout << process.exeName << " has started running" << std::endl;
+        std::cout << (process.windowTitle.size() > 0 ? process.windowTitle : process.exeName) << " has started running" << std::endl;
         
     } else if (process.status == PROCESS_STATUS::STOPPED)
     {
-        std::cout << process.exeName << " has stopped running" << std::endl;
+        std::cout << (process.windowTitle.size() > 0 ? process.windowTitle : process.exeName) << " has stopped running" << std::endl;
     }
     
 }
