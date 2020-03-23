@@ -2,7 +2,8 @@
     \copyright GNU General Public License v3.0 Copyright (c) 2019, Adewale Azeez 
     \author Adewale Azeez <azeezadewale98@gmail.com>
     \date 23 March 2020
-    \file findprocess.cpp
+    \file findprocess2.cpp
+    \description find process with part name of the process full path
 */
 
 #include "../src/processes.cpp"
@@ -12,8 +13,7 @@ using namespace libopen;
 
 bool SpecificAppnameCondition(PROCESS process, void* extraParam )
 {
-    if (process.exeName == ((char*) extraParam))
-    {
+    if (process.exePath.find((char*) extraParam) != std::string::npos) {
         return true;
     }
     return false;
@@ -22,7 +22,7 @@ bool SpecificAppnameCondition(PROCESS process, void* extraParam )
 int main() 
 {
     std::string name;
-    std::cout << "Enter the process name plus ext e.g (brave.exe) to find : ";
+    std::cout << "Enter the process name : ";
     std::getline(std::cin, name);
     std::cout << "Finding processes with name " << name.c_str() << std::endl;
     std::vector<PROCESS> processes = RunningProcesses(&SpecificAppnameCondition, (void*)name.c_str());
@@ -32,4 +32,4 @@ int main()
     return 0;
 }
 
-// Win: g++ findprocess.cpp -I../include/ -lpsapi
+// Win: g++ findprocess2.cpp -I../include/ -lpsapi
