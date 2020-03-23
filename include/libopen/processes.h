@@ -87,6 +87,7 @@ LIBOPEN_API std::vector<PROCESS> RunningProcesses( ProcessCondition callbackCond
 LIBOPEN_API std::vector<PROCESS> OpenedWindowedProcesses();
 
 bool CompareProcNameCondition( PROCESS process, void* extraParam );
+bool CompareProcPathLikeCondition( PROCESS process, void* extraParam );
 
 LIBOPEN_API void InitProcess( PROCESS *process );
 LIBOPEN_API PROCESS GetProcessById( unsigned int processID );

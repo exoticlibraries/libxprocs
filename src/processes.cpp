@@ -118,17 +118,12 @@ LIBOPEN_API std::vector<PROCESS> RunningProcesses( ProcessCondition callbackCond
     return processes;
 }
 
-
 /**
 
 */
 bool CompareProcNameCondition( PROCESS process, void* extraParam )
 {
-    if (process.exeName == ((char*) extraParam))
-    {
-        return true;
-    }
-    return false;
+    return (process.exeName == ((char*) extraParam));
 }
 
 /**
@@ -148,6 +143,30 @@ LIBOPEN_API PROCESS GetProcessByName( const char* processName )
     return process;
 }
 
+/**
+
+*/
+bool CompareProcPathLikeCondition( PROCESS process, void* extraParam )
+{
+    return (process.exePath.find((char*) extraParam) != std::string::npos);
+}
+
+/**
+
+*/
+LIBOPEN_API PROCESS GetProcessByPathLike( const char* processName )
+{
+    PROCESS process;
+    InitProcess(&process);
+    process.exeName = processName;
+    std::vector<PROCESS> processes = GetProcessesByName(processName);
+    if ( processes.size() > 0) 
+    {
+        process = processes.at(0);
+        processes.clear();
+    }
+    return process;
+}
 
 /**
 
