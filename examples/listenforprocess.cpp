@@ -17,6 +17,10 @@ void ProcessStatusChange(PROCESS process, void* extraParam)
     if (process.status == PROCESS_STATUS::STARTED)
     {
         std::cout << process.exeName << " has started running" << std::endl;
+        
+    } else if (process.status == PROCESS_STATUS::STOPPED)
+    {
+        std::cout << process.exeName << " has stopped running" << std::endl;
     }
     
 }
@@ -27,13 +31,8 @@ int main()
     std::string name;
     std::cout << "Enter the process name plus ext e.g (brave.exe) to find : ";
     std::getline(std::cin, name);
-    std::cout << "Finding processes with name " << name.c_str() << std::endl;
-    PROCESS process = GetProcessByName(name.c_str());
-    Hacky_MonitorProcess(process, &ProcessStatusChange, NULL);
-    //std::vector<PROCESS> processes = RunningProcesses(&SpecificAppnameCondition, (void*)name.c_str());
-    //std::vector<PROCESS>::iterator it; 
-    //for(it = processes.begin(); it != processes.end(); ++it) 
-    //    std::cout << "Id=" << it->Id << "," << it->exeName << "," << it->exePath << std::endl;
+    std::cout << "listen for status change of " << name.c_str() << std::endl << std::endl;
+    Hacky_MonitorProcess(name.c_str(), &ProcessStatusChange, NULL);
 #endif
     return 0;
 }

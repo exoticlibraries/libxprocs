@@ -50,8 +50,8 @@ namespace libopen {
 enum PROCESS_STATUS {
     UNKNOWN = 0,              // The status of the process is unknow or the PROCESS struct is unintialized
     RUNNING = 1,              // The process is currently running
-    STARTED = 1,              // The process just start running
-    STOPPED = 1,              // The process just stop running
+    STARTED = 2,              // The process just start running
+    STOPPED = 3,              // The process just stop running
 };
 
 /**
@@ -102,7 +102,7 @@ LIBOPEN_API std::string ProcessToString( PROCESS process);
 // hacky
 
 #ifdef USE_HACKY_PROCESSES_MONITOR
-LIBOPEN_API void Hacky_MonitorProcess( PROCESS process, ProcessStatusChanged processStatusCallback, void* extraParam );
+LIBOPEN_API void Hacky_MonitorProcess( const char* processName, ProcessStatusChanged processStatusCallback, void* extraParam );
 #endif
 
 #if defined(__WIN32__) || defined(__WINDOWS__) || defined(_MSC_VER) || \

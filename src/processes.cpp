@@ -138,6 +138,7 @@ LIBOPEN_API PROCESS GetProcessByName( const char* processName )
 {
     PROCESS process;
     InitProcess(&process);
+    process.exeName = processName;
     std::vector<PROCESS> processes = GetProcessesByName(processName);
     if ( processes.size() > 0) 
     {
@@ -195,25 +196,33 @@ LIBOPEN_API std::string ProcessToString( PROCESS process )
 
 #ifdef USE_HACKY_PROCESSES_MONITOR
 
-LIBOPEN_API void Hacky_MonitorProcess( PROCESS process, ProcessStatusChanged processStatusCallback, void* extraParam )
+//also by Id
+LIBOPEN_API void Hacky_MonitorProcess( const char* processName, ProcessStatusChanged processStatusCallback, void* extraParam )
 {
-    std::map<unsigned int, PROCESS_STATUS> mapOfProcess;
+    std::map<std::string, PROCESS_STATUS> mapOfProcess;
+    PROCESS process;
     do {
-        process = GetProcessById(process.Id);
-        std::cout << ProcessToString(process) << std::endl;
-        std::cout << " " << process.status << " " << PROCESS_STATUS::UNKNOWN << " " << ((process.status == PROCESS_STATUS::UNKNOWN)) << std::endl;
+        process = GetProcessByName(processName);
+        //std::cout << ProcessToString(process) << std::endl;
         if (process.status == PROCESS_STATUS::UNKNOWN) {
+            if (mapOfProcess.find(process.exeName) != mapOfProcess.end()) {
+                if (mapOfProcess[process.exeName] != PROCESS_STATUS::STOPPED) {
+                    process.status = PROCESS_STATUS::STOPPED;
+                }
+                mapOfProcess.erase(process.exeName);
+            }
             goto report_process_status;
-            continue;
         }
-        if(mapOfProcess.find(process.Id) == mapOfProcess.end()) {
-            mapOfProcess.insert(std::make_pair(process.Id, process.status));
+        if (mapOfProcess.find(process.exeName) == mapOfProcess.end()) {
+            process.status = PROCESS_STATUS::STARTED;
+            mapOfProcess.insert(std::make_pair(process.exeName, PROCESS_STATUS::UNKNOWN));
         }
-        if (mapOfProcess[process.Id] != process.status) {
-            mapOfProcess[process.Id] = process.status;
+        if (mapOfProcess[process.exeName] != process.status) {
+            mapOfProcess[process.exeName] = process.status;
             goto report_process_status;
         }
         
+        continue;
         report_process_status:
             if (processStatusCallback != NULL) {
                 processStatusCallback(process, extraParam);
