@@ -5,18 +5,20 @@
     \file listenforprocess.cpp
 */
 
+#define USE_HACKY_PROCESSES_MONITOR
+
 #include "../src/processes.cpp"
 #include <iostream>
 
 using namespace libopen;
 
-bool SpecificAppnameCondition(PROCESS process, void* extraParam )
+void ProcessStatusChange(PROCESS process, void* extraParam)
 {
-    if (process.exeName == ((char*) extraParam))
+    if (process.status == PROCESS_STATUS::STARTED)
     {
-        return true;
+        std::cout << process.exeName << " has started running" << std::endl;
     }
-    return false;
+    
 }
 
 int main() 
@@ -26,10 +28,12 @@ int main()
     std::cout << "Enter the process name plus ext e.g (brave.exe) to find : ";
     std::getline(std::cin, name);
     std::cout << "Finding processes with name " << name.c_str() << std::endl;
-    std::vector<PROCESS> processes = RunningProcesses(&SpecificAppnameCondition, (void*)name.c_str());
-    std::vector<PROCESS>::iterator it; 
-    for(it = processes.begin(); it != processes.end(); ++it) 
-        std::cout << "Id=" << it->Id << "," << it->exeName << "," << it->exePath << std::endl;
+    PROCESS process = GetProcessByName(name.c_str());
+    Hacky_MonitorProcess(process, &ProcessStatusChange, NULL);
+    //std::vector<PROCESS> processes = RunningProcesses(&SpecificAppnameCondition, (void*)name.c_str());
+    //std::vector<PROCESS>::iterator it; 
+    //for(it = processes.begin(); it != processes.end(); ++it) 
+    //    std::cout << "Id=" << it->Id << "," << it->exeName << "," << it->exePath << std::endl;
 #endif
     return 0;
 }

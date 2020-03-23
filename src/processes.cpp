@@ -6,7 +6,7 @@
     \file processes.cpp
 */
 #include <libopen/processes.h> 
-#include <iostream>
+#include <iostream> //TODO: remove
 
 namespace libopen {
 
@@ -31,12 +31,12 @@ LIBOPEN_API PROCESS GetProcessById( unsigned int processID )
 {
     PROCESS p; 
     InitProcess(&p);
-    p.status = PROCESS_STATUS::RUNNING;
     p.Id = processID;
     #ifdef _WIN32
     HANDLE hProcess = OpenProcess( PROCESS_QUERY_INFORMATION | PROCESS_VM_READ, FALSE, processID );
     if ( hProcess != NULL )
     {
+        p.status = PROCESS_STATUS::RUNNING;
         HMODULE hMod;
         DWORD cbNeeded;
         if ( EnumProcessModules( hProcess, &hMod, sizeof(hMod), &cbNeeded) ) 
@@ -159,7 +159,7 @@ LIBOPEN_API std::vector<PROCESS> GetProcessesByName( const char* processName )
 /**
 
 */
-LIBOPEN_API std::string ProcessPathFromId( int processId ) 
+LIBOPEN_API std::string GetProcessPathFromId( int processId ) 
 {
     return GetProcessById(processId).exePath;
 }
@@ -187,5 +187,40 @@ LIBOPEN_API std::string ProcessToString( PROCESS process )
     str_value += std::to_string(process.memoryUsage);
     return str_value;
 }
+
+// Listeners and lifecycles
+
+
+// hacky
+
+#ifdef USE_HACKY_PROCESSES_MONITOR
+
+LIBOPEN_API void Hacky_MonitorProcess( PROCESS process, ProcessStatusChanged processStatusCallback, void* extraParam )
+{
+    std::map<unsigned int, PROCESS_STATUS> mapOfProcess;
+    do {
+        process = GetProcessById(process.Id);
+        std::cout << ProcessToString(process) << std::endl;
+        std::cout << " " << process.status << " " << PROCESS_STATUS::UNKNOWN << " " << ((process.status == PROCESS_STATUS::UNKNOWN)) << std::endl;
+        if (process.status == PROCESS_STATUS::UNKNOWN) {
+            goto report_process_status;
+            continue;
+        }
+        if(mapOfProcess.find(process.Id) == mapOfProcess.end()) {
+            mapOfProcess.insert(std::make_pair(process.Id, process.status));
+        }
+        if (mapOfProcess[process.Id] != process.status) {
+            mapOfProcess[process.Id] = process.status;
+            goto report_process_status;
+        }
+        
+        report_process_status:
+            if (processStatusCallback != NULL) {
+                processStatusCallback(process, extraParam);
+            }
+    } while(true);
+}
+
+#endif
 
 }

@@ -12,6 +12,9 @@
 #include <iterator> 
 #include <string>
 #include <vector>
+#ifdef USE_HACKY_PROCESSES_MONITOR
+#include <map>
+#endif
 
 #ifdef _WIN32
 /*
@@ -47,6 +50,8 @@ namespace libopen {
 enum PROCESS_STATUS {
     UNKNOWN = 0,              // The status of the process is unknow or the PROCESS struct is unintialized
     RUNNING = 1,              // The process is currently running
+    STARTED = 1,              // The process just start running
+    STOPPED = 1,              // The process just stop running
 };
 
 /**
@@ -73,6 +78,11 @@ LIBOPEN_API typedef struct PROCESS {
 */
 typedef bool (*ProcessCondition)( PROCESS process, void* extraParam );
 
+/**
+    
+*/
+typedef void (*ProcessStatusChanged)( PROCESS process, void* extraParam );
+
 LIBOPEN_API std::vector<PROCESS> RunningProcesses( ProcessCondition callbackCondition, void* extraParam );
 LIBOPEN_API std::vector<PROCESS> OpenedWindowedProcesses();
 
@@ -82,14 +92,17 @@ LIBOPEN_API void InitProcess( PROCESS *process );
 LIBOPEN_API PROCESS GetProcessById( unsigned int processID );
 LIBOPEN_API PROCESS GetProcessByName( const char* processName );
 LIBOPEN_API std::vector<PROCESS> GetProcessesByName( const char* processName );
+LIBOPEN_API std::string GetProcessPathFromId( int processId );
 
-LIBOPEN_API std::string ProcessPathFromId( int processId );
 LIBOPEN_API std::string ProcessToString( PROCESS process);
 
 // Listeners and lifecycles
 
-#ifdef USE_HACKY_PROCESSES_MONITOR
 
+// hacky
+
+#ifdef USE_HACKY_PROCESSES_MONITOR
+LIBOPEN_API void Hacky_MonitorProcess( PROCESS process, ProcessStatusChanged processStatusCallback, void* extraParam );
 #endif
 
 #if defined(__WIN32__) || defined(__WINDOWS__) || defined(_MSC_VER) || \
