@@ -86,6 +86,12 @@ LIBOPEN_API std::vector<PROCESS> GetProcessesByName( const char* processName );
 LIBOPEN_API std::string ProcessPathFromId( int processId );
 LIBOPEN_API std::string ProcessToString( PROCESS process);
 
+// Listeners and lifecycles
+
+#ifdef USE_HACKY_PROCESSES_MONITOR
+
+#endif
+
 #if defined(__WIN32__) || defined(__WINDOWS__) || defined(_MSC_VER) || \
 defined (_WIN32) || defined(_WIN64) || defined(_WINDOWS)
 #ifndef _WIN32

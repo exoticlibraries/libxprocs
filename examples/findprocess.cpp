@@ -24,11 +24,11 @@ int main()
     std::string name;
     std::cout << "Enter the process name plus ext e.g (brave.exe) to find : ";
     std::getline(std::cin, name);
-    std::cout << "Finding processes with name " << name.c_str();
+    std::cout << "Finding processes with name " << name.c_str() << std::endl;
     std::vector<PROCESS> processes = RunningProcesses(&SpecificAppnameCondition, (void*)name.c_str());
     std::vector<PROCESS>::iterator it; 
     for(it = processes.begin(); it != processes.end(); ++it) 
-        std::cout << "Id=" << it->Id << "," << it->exeName << "," << it->exePath << std::endl;
+        std::cout << ProcessToString(*it) << std::endl;
     return 0;
 }
 
