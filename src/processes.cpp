@@ -224,6 +224,7 @@ LIBOPEN_API std::string ProcessToString( PROCESS process )
 
 #ifdef USE_HACKY_PROCESSES_MONITOR
 
+//use id as key
 LIBOPEN_API void Hacky_MonitorProcess( const char* processName, ProcessStatusChanged processStatusCallback, void* extraParam )
 {
     std::map<std::string, PROCESS_STATUS> mapOfProcess;
@@ -256,7 +257,8 @@ LIBOPEN_API void Hacky_MonitorProcess( const char* processName, ProcessStatusCha
     } while(true);
 }
 
-LIBOPEN_API void Hacky_MonitorProcesses( const char* processName, ProcessStatusChanged processStatusCallback, void* extraParam )
+//use id as key
+LIBOPEN_API void Hacky_MonitorProcessPath( const char* processName, ProcessStatusChanged processStatusCallback, void* extraParam )
 {
     std::map<std::string, PROCESS> mapOfProcess;
     std::vector<PROCESS> processes;

@@ -107,7 +107,7 @@ LIBOPEN_API std::string ProcessToString( PROCESS process);
 
 #ifdef USE_HACKY_PROCESSES_MONITOR
 LIBOPEN_API void Hacky_MonitorProcess( const char* processName, ProcessStatusChanged processStatusCallback, void* extraParam );
-LIBOPEN_API void Hacky_MonitorProcesses( const char* processName, ProcessStatusChanged processStatusCallback, void* extraParam );
+LIBOPEN_API void Hacky_MonitorProcessPath( const char* processName, ProcessStatusChanged processStatusCallback, void* extraParam );
 #endif
 
 #if defined(__WIN32__) || defined(__WINDOWS__) || defined(_MSC_VER) || \
