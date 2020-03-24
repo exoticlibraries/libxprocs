@@ -40,7 +40,6 @@ int main()
 {
 #ifdef USE_HACKY_PROCESSES_MONITOR
     std::vector<std::string> processes_to_monitor;
-    pthread_t threads[THREADS_COUNT];
     int i;
     int rc;
     int count;
