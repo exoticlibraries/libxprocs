@@ -258,6 +258,7 @@ LIBOPEN_API void Hacky_MonitorProcess( const char* processName, ProcessStatusCha
 }
 
 //use id as key
+//also convert name to lowercase
 LIBOPEN_API void Hacky_MonitorProcessPath( const char* processName, ProcessStatusChanged processStatusCallback, void* extraParam )
 {
     std::map<std::string, PROCESS> mapOfProcess;
